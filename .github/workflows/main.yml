@@ -1,4 +1,4 @@
-name: Maui CD
+name: iOS Build
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ env:
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
-  build-iOS:
+  build:
     runs-on: macos-13
 
     - name: Select Xcode Version
