@@ -21,7 +21,7 @@ env:
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
-  build_iOS:
+  build-iOS:
     runs-on: macos-13
 
     - name: Select Xcode Version
