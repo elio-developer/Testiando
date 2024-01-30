@@ -54,7 +54,7 @@ jobs:
           echo "$P12_PASSWORD"
 
           # import certificate to keychain
-          security import $CERTIFICATE_PATH -P mn6h4F_.HM*J -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -v
+          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -t cert -f pkcs12 -P mn6h4F_.HM*J -A 
 
       - name: Other
         run: |
