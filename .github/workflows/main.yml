@@ -1,4 +1,4 @@
-name: iOS CI
+name: macOSCI
 
 on:
   workflow_dispatch:
