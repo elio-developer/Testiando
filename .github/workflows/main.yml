@@ -1,4 +1,4 @@
-name: iOS Build
+name: iOS CI
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ env:
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
-  build:
+  buildiOS:
     runs-on: macos-13
 
     - name: Select Xcode Version
