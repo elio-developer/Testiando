@@ -79,7 +79,7 @@ jobs:
     
       - name: Restore nuget packages
         run: |
-          run: dotnet restore ${{ env.CSPROJ_TO_BUILD }}
+          dotnet restore ${{ env.CSPROJ_TO_BUILD }}
         
       - name : Build iOS App
         shell: bash
