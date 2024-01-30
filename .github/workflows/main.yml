@@ -1,4 +1,4 @@
-name: macOSCI
+name: Maui CD
 
 on:
   workflow_dispatch:
@@ -66,23 +66,22 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version:  '${{env.DOTNET_VERSION}}'
+      # - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     dotnet-version:  '${{env.DOTNET_VERSION}}'
 
-      - name: Install .NET MAUI
-        shell: bash
-        run: |
-          dotnet nuget locals all --clear 
-          dotnet workload install maui-android maui-ios
+      # - name: Install .NET MAUI
+      #   shell: bash
+      #   run: |
+      #     dotnet nuget locals all --clear 
+      #     dotnet workload install maui-android maui-ios
     
-      - name: Restore nuget packages
-        run: |
-          run: dotnet restore ${{ env.CSPROJ_TO_BUILD }}
+      # - name: Restore nuget packages
+      #   run: |
+      #     run: dotnet restore ${{ env.CSPROJ_TO_BUILD }}
         
-        # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
-      - name : Build iOS App
-        shell: bash
-        run: |
-          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c Release -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
+      # - name : Build iOS App
+      #   shell: bash
+      #   run: |
+      #     dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c Release -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
