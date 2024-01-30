@@ -48,9 +48,9 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
-          echo -n "Prueba"
-          echo -n "$CERTIFICATE_PATH"
-          echo -n "$KEYCHAIN_PATH"
+          echo "Prueba"
+          echo "$CERTIFICATE_PATH"
+          echo "$KEYCHAIN_PATH"
 
           # import certificate to keychain
           security import $CERTIFICATE_PATH -P $P12_PASSWORD -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
