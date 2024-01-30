@@ -1,4 +1,4 @@
-name: macOSCI
+name: Maui CD
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ env:
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
-  buildiOS:
+  build_iOS:
     runs-on: macos-13
     
     steps:
@@ -55,10 +55,6 @@ jobs:
 
           # import certificate to keychain
           security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -t cert -f pkcs12 -P $P12_PASSWORD -A 
-
-      - name: Other
-        run: |
-
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
