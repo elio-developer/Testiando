@@ -21,17 +21,17 @@ env:
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
-  buildiOS:
+  build_iOS:
     runs-on: macos-13
 
-    - name: Select Xcode Version
-        shell: bash
-        run: |
-          sudo xcode-select -s /Applications/Xcode_15.2.app
-    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      - name: Select Xcode Version
+        shell: bash
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.2.app
       
       - name: Install the Apple certificate and provisioning profile
         env:
@@ -66,22 +66,22 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
-      # - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version:  '${{env.DOTNET_VERSION}}'
+      - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version:  '${{env.DOTNET_VERSION}}'
 
-      # - name: Install .NET MAUI
-      #   shell: bash
-      #   run: |
-      #     dotnet nuget locals all --clear 
-      #     dotnet workload install maui-android maui-ios
+      - name: Install .NET MAUI
+        shell: bash
+        run: |
+          dotnet nuget locals all --clear 
+          dotnet workload install maui-android maui-ios
     
-      # - name: Restore nuget packages
-      #   run: |
-      #     run: dotnet restore ${{ env.CSPROJ_TO_BUILD }}
+      - name: Restore nuget packages
+        run: |
+          run: dotnet restore ${{ env.CSPROJ_TO_BUILD }}
         
-      # - name : Build iOS App
-      #   shell: bash
-      #   run: |
-      #     dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c Release -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
+      - name : Build iOS App
+        shell: bash
+        run: |
+          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c Release -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
