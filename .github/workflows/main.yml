@@ -97,7 +97,7 @@ jobs:
         env:
           IPA_PATH: ${{ github.workspace }}/${{ env.PROJECT_FOLDER }}/bin/${{ env.BUILD_CONFIG }}/${{ env.DOTNET_VERSION_TARGETS }}-ios/ios-arm64/publish/${{ env.PROJECT_FOLDER }}.ipa
         run: |
-          APPSTORE_PRIVATE_KEY_PATH: $RUNNER_TEMP/appStoreKey.p8
+          APPSTORE_PRIVATE_KEY_PATH=$RUNNER_TEMP/appStoreKey.p8
           echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APPSTORE_PRIVATE_KEY_PATH
           xcrun altool --upload-app --type ios --file "${{ env.IPA_PATH }}" --apiKey ${{ secrets.APPSTORE_KEY_ID }} --apiIssuer ${{ secrets.APPSTORE_ISSUER_ID }} --apiKeyPath $APPSTORE_PRIVATE_KEY_PATH
 
