@@ -92,7 +92,7 @@ jobs:
       - name : Build iOS App
         shell: bash
         run: |
-          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.XCODE_VERSION }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
+          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.BUILD_CONFIG }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
 
       - name: Upload app to TestFlight
         uses: apple-actions/upload-testflight-build@v1
