@@ -67,12 +67,15 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name : Make Directory for App Store Key
+        run: |
+          mkdir ~/private_keys
+          
       - name : Setup App Store Key
         env:
           APP_STORE_KEY_NAME: ~/private_keys/AuthKey_AuthKey_TYK84P3ZTD.p8
         run: |
-          mkdir ~/private_keys
-          echo -n ${{ secrets.APPSTORE_PRIVATE_KEY }} | base64 --decode > $APP_STORE_KEY_NAME
+          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
 
       - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v1
