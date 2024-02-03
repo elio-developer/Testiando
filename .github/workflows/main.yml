@@ -72,7 +72,7 @@ jobs:
           APP_STORE_KEY_NAME: ~/private_keys/AuthKey_AuthKey_TYK84P3ZTD.p8
         run: |
           mkdir ~/private_keys
-          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
+          echo -n ${{ secrets.APPSTORE_PRIVATE_KEY }} | base64 --decode > $APP_STORE_KEY_NAME
 
       - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v1
