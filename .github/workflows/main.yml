@@ -67,6 +67,13 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name : Setup App Store Key
+        env:
+          APP_STORE_KEY_NAME: ~/private_keys/AuthKey_${{ secrets.APPSTORE_KEY_ID }}
+        run: |
+          mkdir ~/private_keys
+          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME.p8
+
       - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v1
         with:
@@ -98,12 +105,4 @@ jobs:
           IPA_PATH: ${{ github.workspace }}/${{ env.PROJECT_FOLDER }}/bin/${{ env.BUILD_CONFIG }}/${{ env.DOTNET_VERSION_TARGETS }}-ios/ios-arm64/publish/${{ env.PROJECT_FOLDER }}.ipa
         run: |
           echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > appStoreKey.p8
-          xcrun altool --upload-app --type ios --file "${{ env.IPA_PATH }}" --apiKey ${{ secrets.APPSTORE_KEY_ID }} --apiIssuer ${{ secrets.APPSTORE_ISSUER_ID }} --apiKeyPath appStoreKey.p8
-
-      # - name: Upload app to TestFlight
-      #   uses: apple-actions/upload-testflight-build@v1
-      #   with:
-      #     app-path: ${{ github.workspace }}/${{ env.PROJECT_FOLDER }}/bin/${{ env.BUILD_CONFIG }}/${{ env.DOTNET_VERSION_TARGETS }}-ios/ios-arm64/publish/${{ env.PROJECT_FOLDER }}.ipa
-      #     issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-      #     api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-      #     api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+          xcrun altool --upload-app --type ios --file "${{ env.IPA_PATH }}" --apiKey ${{ secrets.APPSTORE_KEY_ID }} --apiIssuer ${{ secrets.APPSTORE_ISSUER_ID }}
