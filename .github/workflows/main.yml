@@ -17,8 +17,8 @@ env:
   DOTNET_VERSION: 8.x
   XCODE_VERSION: 15.2
   DOTNET_VERSION_TARGETS: net8.0
-  CSPROJ_TO_BUILD: GigPayTracker/GigPayTracker.csproj
-  PROJECT_FOLDER: GigPayTracker
+  CSPROJ_TO_BUILD: Testing/Testing.csproj
+  PROJECT_FOLDER: Testing
   PACKAGE_NAME: services.emedia.gigpaytracker
 
 jobs:
