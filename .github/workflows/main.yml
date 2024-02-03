@@ -29,10 +29,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Select Xcode Version
-        shell: bash
-        run: |
-          sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      # - name: Select Xcode Version
+      #   shell: bash
+      #   run: |
+      #     sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
       
       # - name: Install the Apple certificate and provisioning profile
       #   env:
@@ -69,15 +69,21 @@ jobs:
 
       - name : Make Directory for App Store Key
         run: |
-          pwd
-          mkdir ~/private_keys
+          cd ˜/
+          mkdir private_keys
+          cd ~/private_keys
           
       - name : Setup App Store Key
         env:
-          APP_STORE_KEY_NAME: ~/private_keys/AuthKey_AuthKey_TYK84P3ZTD.p8
+          APP_STORE_KEY_NAME: AuthKey_TYK84P3ZTD.p8
         run: |
+          pwd
           echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
 
+      - name : Make Directory for App Store Key
+        run: |
+          cd /Users/runner/work/${{ env.PROJECT_FOLDER }}/${{ env.CSPROJ_TO_BUILD }}
+          
       # - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
       #   uses: actions/setup-dotnet@v1
       #   with:
