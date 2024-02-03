@@ -69,7 +69,7 @@ jobs:
 
       - name : Make Directory for App Store Key
         run: |
-          cd ˜/
+          cd ~/
           mkdir private_keys
           cd ~/private_keys
           
