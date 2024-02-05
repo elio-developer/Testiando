@@ -66,6 +66,15 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name : Create App Store Key in ~/
+        env:
+            APP_STORE_KEY_NAME: AuthKey_${{ secrets.APPSTORE_KEY_ID }}.p8
+        run: |
+          cd ~/
+          mkdir private_keys
+          cd ~/private_keys
+          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
     
       - name : Create App Store Key in ~/work/Testing/Testing/
         env:
@@ -73,7 +82,7 @@ jobs:
         run: |
           cd ~/work/Testing/Testing/
           mkdir private_keys
-          cd ~/private_keys
+          cd private_keys
           echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
           
       - name : Setup App Store Key
