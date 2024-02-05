@@ -67,25 +67,22 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
     
-      - name : Create App Store Key in ~/work/Testing/Testing/
+      - name : Create App Store Key in ~/work/Testiando/Testiando/
         env:
             APP_STORE_KEY_NAME: AuthKey_${{ secrets.APPSTORE_KEY_ID }}.p8
         run: |
+          pwd
           cd ~/work/Testiando/Testiando/
           mkdir private_keys
           cd private_keys
           echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
           
-      - name : Setup App Store Key
-        env:
-          APP_STORE_KEY_NAME: AuthKey_TYK84P3ZTD.p8
-        run: |
-          pwd
-          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
-
-      - name : Make Directory for App Store Key
-        run: |
-          cd /Users/runner/work/Testing/Testing
+    #   - name : Setup App Store Key
+    #     env:
+    #       APP_STORE_KEY_NAME: AuthKey_TYK84P3ZTD.p8
+    #     run: |
+    #       pwd
+    #       echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
           
       - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v1
