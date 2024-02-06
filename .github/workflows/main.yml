@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
 env:
-  BUILD_VERSION: 1.0.0
+  BUILD_VERSION: 1.0
   BUILD_CONFIG: Release
   DOTNET_VERSION: 8.x
   XCODE_VERSION: 15.2
@@ -23,65 +23,65 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Select Xcode Version
-        shell: bash
-        run: |
-          sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+    #   - name: Select Xcode Version
+    #     shell: bash
+    #     run: |
+    #       sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
       
-      - name: Install the Apple certificate and provisioning profile
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
-          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: |
-          # create variables
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+    #   - name: Install the Apple certificate and provisioning profile
+    #     env:
+    #       BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+    #       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+    #       BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+    #       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+    #     run: |
+    #       # create variables
+    #       CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+    #       PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+    #       KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode > $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > $PP_PATH
+    #       echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode > $CERTIFICATE_PATH
+    #       echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > $PP_PATH
         
-          # create temporary keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+    #       # create temporary keychain
+    #       security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+    #       security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+    #       security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
-          echo "Prueba"
-          echo "$CERTIFICATE_PATH"
-          echo "$KEYCHAIN_PATH"
-          echo "$P12_PASSWORD"
+    #       echo "Prueba"
+    #       echo "$CERTIFICATE_PATH"
+    #       echo "$KEYCHAIN_PATH"
+    #       echo "$P12_PASSWORD"
 
-          # import certificate to keychain
-          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -t cert -f pkcs12 -P $P12_PASSWORD -A 
-          security list-keychain -d user -s $KEYCHAIN_PATH
+    #       # import certificate to keychain
+    #       security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -t cert -f pkcs12 -P $P12_PASSWORD -A 
+    #       security list-keychain -d user -s $KEYCHAIN_PATH
 
-          # apply provisioning profile
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+    #       # apply provisioning profile
+    #       mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+    #       cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
     
-      - name : Create App Store Key
-        env:
-            APP_STORE_KEY_NAME: private_keys/AuthKey_${{ secrets.APPSTORE_KEY_ID }}.p8
-        run: |
-          mkdir private_keys
-          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
+    #   - name : Create App Store Key
+    #     env:
+    #         APP_STORE_KEY_NAME: private_keys/AuthKey_${{ secrets.APPSTORE_KEY_ID }}.p8
+    #     run: |
+    #       mkdir private_keys
+    #       echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
           
-      - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version:  '${{env.DOTNET_VERSION}}'
+    #   - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
+    #     uses: actions/setup-dotnet@v1
+    #     with:
+    #       dotnet-version:  '${{env.DOTNET_VERSION}}'
 
-      - name: Install .NET MAUI
-        shell: bash
-        run: |
-          dotnet nuget locals all --clear 
-          dotnet workload install maui-android maui-ios
+    #   - name: Install .NET MAUI
+    #     shell: bash
+    #     run: |
+    #       dotnet nuget locals all --clear 
+    #       dotnet workload install maui-android maui-ios
     
-      - name: Restore nuget packages
-        run: |
-          dotnet restore ${{ env.CSPROJ_TO_BUILD }}
+    #   - name: Restore nuget packages
+    #     run: |
+    #       dotnet restore ${{ env.CSPROJ_TO_BUILD }}
 
       - name: Version the app
         uses: managedcode/MAUIAppVersion@v1
@@ -90,9 +90,9 @@ jobs:
           version: ${{ github.run_number }} # to keep value unique
           displayVersion: ${{ env.BUILD_VERSION }}.${{ github.run_number }}
         
-      - name : Build iOS App
-        run: |
-          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.BUILD_CONFIG }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
+    #   - name : Build iOS App
+    #     run: |
+    #       dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.BUILD_CONFIG }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
 
     #   - name : Upload app to TestFlight
     #     env:
