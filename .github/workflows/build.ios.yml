@@ -1,9 +1,13 @@
-name: iOS CD
+name: Build iOS
 
 on:
   workflow_dispatch:
+  push:
+    paths-ignore:
+      - "**.md"
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
   pull_request:
-    branches: [ "main" ]
 
 env:
   BUILD_VERSION: 1.0.0
@@ -60,13 +64,6 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-    
-      - name : Create App Store Key
-        env:
-            APP_STORE_KEY_NAME: private_keys/AuthKey_${{ secrets.APPSTORE_KEY_ID }}.p8
-        run: |
-          mkdir private_keys
-          echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > $APP_STORE_KEY_NAME
           
       - name: Setup .NET SDK ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v1
@@ -92,11 +89,4 @@ jobs:
         
       - name : Build iOS App
         run: |
-          dotnet publish ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.BUILD_CONFIG }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios /p:ArchiveOnBuild=true /p:EnableAssemblyILStripping=false
-
-    #   - name : Upload app to TestFlight
-    #     env:
-    #       IPA_PATH: ${{ github.workspace }}/${{ env.PROJECT_FOLDER }}/bin/${{ env.BUILD_CONFIG }}/${{ env.DOTNET_VERSION_TARGETS }}-ios/ios-arm64/publish/${{ env.PROJECT_FOLDER }}.ipa
-    #     run: |
-    #       echo -n "${{ secrets.APPSTORE_PRIVATE_KEY }}" | base64 --decode > appStoreKey.p8
-    #       xcrun altool --upload-app --type ios --file "${{ env.IPA_PATH }}" --apiKey ${{ secrets.APPSTORE_KEY_ID }} --apiIssuer ${{ secrets.APPSTORE_ISSUER_ID }}
+          dotnet build ${{ env.CSPROJ_TO_BUILD }} -c ${{ env.BUILD_CONFIG }} -f:${{ env.DOTNET_VERSION_TARGETS }}-ios
