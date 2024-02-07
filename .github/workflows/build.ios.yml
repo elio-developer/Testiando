@@ -34,11 +34,10 @@ jobs:
             # If enabled, diagnostic information will be added to the action output.
             debug: true
             bump_each_commit: true
-            bump_each_commit_patch_pattern: "(PATCH)"
             major_pattern: (MAJOR)
             minor_pattern: (MINOR)
             version_format: ${major}.${minor}.${patch}
-            
+
 
     #   - name: Select Xcode Version
     #     shell: bash
