@@ -39,8 +39,10 @@ jobs:
             version_format: ${major}.${minor}.${patch}
 
       - name: Echo version
+        env:
+            MY_VERSION:  ${{ steps.version.outputs }}
         run: |
-            echo ${{ steps.version.outputs }}
+            echo "$MY_VERSION"
       
 
     #   - name: Select Xcode Version
