@@ -36,6 +36,7 @@ jobs:
             major_pattern: (MAJOR)
             minor_pattern: (MINOR)
             version_format: ${major}.${minor}.${patch}
+            
 
     #   - name: Select Xcode Version
     #     shell: bash
