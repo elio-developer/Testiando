@@ -40,7 +40,7 @@ jobs:
 
       - name: Echo version
         env:
-            MY_VERSION:  ${{ steps.version.outputs }}
+            MY_VERSION:  ${{ steps.version.outputs.version }}
         run: |
             echo "$MY_VERSION"
       
