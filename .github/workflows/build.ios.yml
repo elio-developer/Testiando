@@ -48,6 +48,7 @@ jobs:
             echo "is_tagged: ${{ steps.version.outputs.is_tagged }}"
             echo "version_tag: ${{ steps.version.outputs.version_tag }}"
       
+            
 
     #   - name: Select Xcode Version
     #     shell: bash
