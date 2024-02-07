@@ -31,8 +31,11 @@ jobs:
         with:
             # If enabled, diagnostic information will be added to the action output.
             debug: true
-            # If true, the branch will be used to select the maximum version.
-            version_from_branch: true
+            bump_each_commit: true
+            bump_each_commit_patch_pattern: "(PATCH)"
+            major_pattern: (MAJOR)
+            minor_pattern: (MINOR)
+            version_format: ${major}.${minor}.${patch}
 
     #   - name: Select Xcode Version
     #     shell: bash
