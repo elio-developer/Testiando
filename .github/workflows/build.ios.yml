@@ -29,7 +29,7 @@ jobs:
         with:
             fetch-depth: 0
 
-            
+
       - name: Generate version
         id: version # Assign an ID here
         uses: paulhatch/semantic-version@v5.4.0
@@ -102,8 +102,8 @@ jobs:
         uses: managedcode/MAUIAppVersion@v1
         with: 
           csproj: ${{ env.CSPROJ_TO_BUILD }}
-          version: ${{ github.run_number }} # to keep value unique
-          displayVersion: ${{ env.BUILD_VERSION }}.${{ github.run_number }}
+          version: ${{ steps.version.outputs.version }} (${{ github.run_number }}) # to keep value unique
+          displayVersion: ${{ steps.version.outputs.version }}
         
     #   - name : Build iOS App
     #     run: |
